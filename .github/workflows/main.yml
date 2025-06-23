@@ -1,0 +1,25 @@
+name: Create Release Tarball
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+
+    - name: Create tarball
+      # We cd into the parent dir to get 'ble.sh/' as the top-level dir in the tarball
+      run: |
+        cd ..
+        tar -czvf ble.sh.tar.gz ble.sh
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ble.sh-package
+        path: ../ble.sh.tar.gz
